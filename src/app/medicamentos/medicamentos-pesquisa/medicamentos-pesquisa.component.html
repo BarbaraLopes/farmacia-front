@@ -35,7 +35,8 @@
         </p-column>
         <p-column styleClass="col-acoes">
           <ng-template let-med="rowData" pTemplate="body">
-            <button pButton icon="fa fa-minus" [disabled]="med.status.descricao === 'Disponível'" pTooltip="Excluir" tooltipPosition="top" (click)="excluir(med)"></button>
+            <button pButton icon="fa fa-minus" pTooltip="Excluir" tooltipPosition="top" (click)="excluir(med)" *ngIf="med.status.descricao === 'Disponível'"></button>
+            <button pButton icon="fa fa-check" pTooltip="Doar" tooltipPosition="top" (click)="abrirModalConfirmacao(med)" *ngIf="med.status.descricao === 'Reservado'"></button>
           </ng-template>
         </p-column>
       </p-dataTable>
@@ -48,18 +49,30 @@
   </div>
 
 </div>
-<form autocomplete="off" (ngSubmit)="salvar()" [formGroup]="formulario">
-<p-dialog header="Remover do estoque" [(visible)]="display">
+
+<form autocomplete="off" [formGroup]="formulario">
+  <p-dialog header="Remover do estoque" [(visible)]="display">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-fluid">
+        <label>Motivo</label>
+        <textarea pInputTextarea rows="3" name="motivo" formControlName="motivo"></textarea>
+        <app-message [control]="formulario.get('motivo')" error="required" text="Informe um motivo"></app-message>
+      </div>
+    </div>
+    <p-footer>
+      <button type="button" pButton icon="fa fa-trash" (click)="atualizarStatusParaExcluido()" label="Excluir"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="display=false" label="Cancelar" class="ui-button-secondary"></button>
+    </p-footer>
+  </p-dialog>
+</form>
+<p-dialog header="Doar medicamento" [(visible)]="displayDoar">
   <div class="ui-g">
     <div class="ui-g-12 ui-fluid">
-      <label>Motivo</label>
-      <textarea pInputTextarea rows="3" name="motivo" formControlName="motivo"></textarea>
-      <app-message [control]="formulario.get('motivo')" error="required" text="Informe um motivo"></app-message>
+      <label>Deseja confirmar a doação para o usuario {{medicamento.solicitacaoAtual?.idPessoa}} ou cancela-la? </label>
     </div>
   </div>
   <p-footer>
-    <button type="button" pButton icon="fa fa-trash" (click)="atualizarStatusParaExcluido()" label="Excluir"></button>
-    <button type="button" pButton icon="fa fa-close" (click)="display=false" label="Cancelar" class="ui-button-secondary"></button>
+    <button type="button" pButton icon="fa fa-check" label="Confirmar" (click)="confirmarSolicitacao()"></button>
+    <button type="button" pButton icon="fa fa-close" label="Cancelar" (click)="excluirSolicitacao()" class="ui-button-secondary"></button>
   </p-footer>
 </p-dialog>
-</form>

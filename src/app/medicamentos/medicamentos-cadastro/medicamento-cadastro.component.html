@@ -34,12 +34,11 @@
       </div>
       <div class="ui-g-6 ui-md-2 ui-fluid" formGroupName="tipo">
         <label>Forma farmacêutica</label>
-        <p-dropdown name="tipo" [options]="tipos" placeholder="Selecione" [autoWidth]="false" formControlName="id"></p-dropdown>
+        <p-dropdown name="tipo" [options]="tipos" placeholder="Selecione" [autoWidth]="false" formControlName="id" (onChange)="desabilitarQtd()"></p-dropdown>
       </div>
-      <div class="ui-g-6 ui-md-1 ui-fluid">
+      <div class="ui-g-6 ui-md-1 ui-fluid" formGroupName="estoque">
         <label>Quantidade</label>
-        <input pInputText type="number" name="qtd-comp" disabled="true">
-
+        <input pInputText type="number" name="qtd-comp" formControlName="quantidade">
       </div>
       <div class="ui-g-6 ui-md-2 ui-fluid">
         <label>Data de vencimento</label>
@@ -58,3 +57,12 @@
     </div>
   </form>
 </div>
+
+<p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [width]="350" [minWidth]="200" [minY]="70"
+        [maximizable]="true" [baseZIndex]="10000">
+    <span>Lote já cadastrado, deseja acrescentar a quantidade '{{formulario.get('estoque').value.quantidade}}' ao estoque do medicamento?</span>
+        <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="atualizarEstoque()" label="Sim"></button>
+            <button type="button" pButton icon="pi pi-close" (click)="display=false" label="Não" class="ui-button-secondary"></button>
+        </p-footer>
+</p-dialog>

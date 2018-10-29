@@ -12,7 +12,7 @@ export class Medicamento {
 
   public outrasEspecificacoes: string;
 
-  public tipo: TipoMedicamento;
+  public tipo: TipoMedicamento = new TipoMedicamento();
 
   public laboratorio: string;
 
@@ -21,14 +21,33 @@ export class Medicamento {
   public obsExclusao: string;
 
   public usoVeterinario: string;
+
+  public estoque: Estoque;
+
+  public solicitacaoAtual: Solicitacao = new Solicitacao();
 }
 
 export class Status {
-  codigo: number;
+  id: number;
   descricao: string;
 }
 
 export class TipoMedicamento {
-  codigo: number;
+  id: number;
   descricao: string;
+}
+
+export class Estoque {
+  id: number;
+  quantidade: number;
+}
+
+export class Solicitacao {
+  id: number;
+  quantidade: number;
+  medicamento: Medicamento;
+  idPessoa: number;
+  dataFinal: Date;
+  confirmada: boolean;
+  excluida: boolean;
 }

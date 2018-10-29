@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="ui-g">
+
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+      <div class="ui-g-12">
+        <h1>Pesquisa de medicamentos</h1>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Digite o nome do medicamento:</label>
+        <input pInputText type="text" name="descricao" [(ngModel)]="filtro.descricao">
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-dataTable [value]="medicamentos" [responsive]="true" emptyMessage="Nenhum medicamento encontrado" [paginator]="true" [rows]="filtro.itensPorPagina"
+        [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)">
+        <p-column field="principioAtivo" header="Medicamento"></p-column>
+        <p-column field="nomeComercial" header="NomeComercial"></p-column>
+        <p-column field="dosagem" header="Dosagem"></p-column>
+        <p-column field="tipo.descricao" header="Forma farmacêutica"></p-column>
+        <p-column header="Vencimento">
+          <ng-template let-med="rowData" pTemplate="body">
+            <span>{{ med.dataVencimento | date:'dd/MM/yyyy' }}</span>
+          </ng-template>
+        </p-column>
+        <p-column styleClass="col-acoes">
+          <ng-template let-med="rowData" pTemplate="body">
+            <button pButton icon="fa fa-plus" pTooltip="Solicitar" tooltipPosition="top" (click)="abrirModal(med)"></button>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+
+  </div>
+
+</div>
+<form autocomplete="off" [formGroup]="formulario">
+  <p-dialog header="Solicitar" [width]="350" [minWidth]="200" [responsive]="true" [(visible)]="display">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-fluid">
+        <label>Nome: {{medicamento.nomeComercial}}</label>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Princípio ativo: {{medicamento.principioAtivo}}</label>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Dosagem: {{medicamento.dosagem}}</label>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Data de vencimento: {{medicamento.dataVencimento  | date:'dd/MM/yyyy'}}</label>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Laboratório: {{medicamento.laboratorio}}</label>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Forma farmacêutica: {{medicamento.tipo.descricao}}</label>
+      </div>
+      <div *ngIf="medicamento.tipo.descricao !== 'Gotas'">
+      <div class="ui-g-4 ui-fluid">
+        <label>Quantidade:</label>
+      </div>
+      <div class="ui-g-4 ui-fluid">
+        <input pInputText type="number" name="qtd-comp" formControlName="quantidade">
+        <app-message [control]="formulario.get('quantidade')" error="required" text="Informe uma quantidade"></app-message>
+      </div>
+      </div>
+    </div>
+    <p-footer>
+      <button type="button" pButton icon="fa fa-plus" (click)="solicitar()" label="Solicitar"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="display=false" label="Cancelar" class="ui-button-secondary"></button>
+    </p-footer>
+  </p-dialog>
+</form>
+<p-dialog [(visible)]="displaySucesso" [modal]="true" [responsive]="true" [width]="350" [minWidth]="200" [minY]="70"
+        [maximizable]="true" [baseZIndex]="10000">
+    <span>{{mensagem}}</span>
+        <p-footer>
+            <button type="button" pButton (click)="fecharModal()" label="OK" class="ui-button-secondary"></button>
+        </p-footer>
+</p-dialog>

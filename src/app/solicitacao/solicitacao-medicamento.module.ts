@@ -1,3 +1,4 @@
+import { SolicitacaoMedicamentoService } from './solicitacao-medicamento.service';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -18,10 +19,9 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import { DataTableModule } from 'primeng/components/datatable/datatable';
 import {DialogModule} from 'primeng/dialog';
 
-import { MedicamentosRoutingModule } from './medicamentos-routing.module';
-import { MedicamentosPesquisaComponent } from './medicamentos-pesquisa/medicamentos-pesquisa.component';
-import { MedicamentoCadastroComponent } from './medicamentos-cadastro/medicamento-cadastro.component';
 import { SharedModule } from '../shared/shared.module';
+import { SolicitacaoMedicamentoRoutingModule } from './solicitacao-medicamento-routing.module';
+import { SolicitacaoMedicamentoComponent } from './solicitacao-medicamento/solicitacao-medicamento.component';
 
 @NgModule({
   imports: [
@@ -45,12 +45,12 @@ import { SharedModule } from '../shared/shared.module';
     DialogModule,
 
     SharedModule,
-    MedicamentosRoutingModule
+    SolicitacaoMedicamentoRoutingModule
   ],
+  providers: [],
   declarations: [
-    MedicamentoCadastroComponent,
-    MedicamentosPesquisaComponent
+    SolicitacaoMedicamentoComponent
   ],
   exports: []
 })
-export class MedicamentosModule { }
+export class SolicitacaoMedicamentoModule { }

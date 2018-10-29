@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
 import { Medicamento } from '../core/model';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 
 export class MedicamentoFiltro {
   descricao: string;
@@ -32,7 +32,9 @@ export class MedicamentoService {
     if (filtro.descricao) {
       params.set('descricao', filtro.descricao);
     }
-
+    if (filtro.status) {
+      params.set('status', filtro.status);
+    }
     return this.http.get(`${this.medicamentosUrl}`,
         { headers, search: params })
       .toPromise()
@@ -57,6 +59,14 @@ export class MedicamentoService {
     });
   }
 
+  buscarPeloCodigo(lote: string): Promise<any> {
+    return this.http.get(`${this.medicamentosUrl}/${lote}`)
+    .toPromise()
+    .then(response => {
+      return response.json();
+    });
+  }
+
   salvar(medicamento: Medicamento): Promise<Medicamento> {
     const headers = new Headers();
     headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
@@ -73,7 +83,26 @@ export class MedicamentoService {
     headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
     headers.append('Content-Type', 'application/json');
     return this.http.put(`${this.medicamentosUrl}/${medicamento.lote}`,
-        JSON.stringify(medicamento))
+        JSON.stringify(medicamento), { headers })
+      .toPromise()
+      .then(response => response.json() as Medicamento);
+  }
+
+  atualizarStatus(medicamento: Medicamento): Promise<Medicamento> {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Content-Type', 'application/json');
+    return this.http.put(`${this.medicamentosUrl}/atualizar-status/${medicamento.lote}`,
+        JSON.stringify(medicamento), { headers })
+      .toPromise()
+      .then(response => response.json() as Medicamento);
+  }
+
+  atualizarEstoque(estoque, lote): Promise<Medicamento> {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Content-Type', 'application/json');
+    return this.http.put(`${this.medicamentosUrl}/acrescentar-ao-estoque/${lote}`, JSON.stringify(estoque), { headers })
       .toPromise()
       .then(response => response.json() as Medicamento);
   }

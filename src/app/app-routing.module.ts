@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+
 const routes: Routes = [
   { path: 'medicamentos', loadChildren: 'src/app/medicamentos/medicamentos.module#MedicamentosModule' },
-
+  { path: 'solicitacao', loadChildren: 'src/app/solicitacao/solicitacao-medicamento.module#SolicitacaoMedicamentoModule' },
   { path: '', redirectTo: 'medicamentos', pathMatch: 'full' },
 ];
 
