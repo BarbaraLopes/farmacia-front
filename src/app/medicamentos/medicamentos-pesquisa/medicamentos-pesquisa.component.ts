@@ -1,4 +1,4 @@
-import { SolicitacaoMedicamentoService } from './../../solicitacao/solicitacao-medicamento.service';
+import { SolicitacaoMedicamentoService } from '../../solicitacao/solicitacao-medicamento.service';
 import { Status, Medicamento } from '../../core/model';
 import { Component, OnInit } from '@angular/core';
 

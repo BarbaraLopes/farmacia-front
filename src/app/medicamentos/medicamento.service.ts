@@ -16,9 +16,11 @@ export class MedicamentoFiltro {
 export class MedicamentoService {
 
   medicamentosUrl: string;
+  token: string;
 
   constructor(private http: Http) {
     this.medicamentosUrl = `${environment.apiUrl}/medicamentos`;
+    this.token = localStorage.getItem('token');
   }
 
   pesquisar(filtro: MedicamentoFiltro): Promise<any> {
@@ -69,7 +71,7 @@ export class MedicamentoService {
 
   salvar(medicamento: Medicamento): Promise<Medicamento> {
     const headers = new Headers();
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Authorization', `bearer ${this.token}`);
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.medicamentosUrl,
       JSON.stringify(medicamento), { headers })
@@ -80,7 +82,7 @@ export class MedicamentoService {
 
   atualizar(medicamento: Medicamento): Promise<Medicamento> {
     const headers = new Headers();
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Authorization', `bearer ${this.token}`);
     headers.append('Content-Type', 'application/json');
     return this.http.put(`${this.medicamentosUrl}/${medicamento.lote}`,
         JSON.stringify(medicamento), { headers })
@@ -90,7 +92,7 @@ export class MedicamentoService {
 
   atualizarStatus(medicamento: Medicamento): Promise<Medicamento> {
     const headers = new Headers();
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Authorization', `bearer ${this.token}`);
     headers.append('Content-Type', 'application/json');
     return this.http.put(`${this.medicamentosUrl}/atualizar-status/${medicamento.lote}`,
         JSON.stringify(medicamento), { headers })
@@ -100,7 +102,7 @@ export class MedicamentoService {
 
   atualizarEstoque(estoque, lote): Promise<Medicamento> {
     const headers = new Headers();
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Authorization', `bearer ${this.token}`);
     headers.append('Content-Type', 'application/json');
     return this.http.put(`${this.medicamentosUrl}/acrescentar-ao-estoque/${lote}`, JSON.stringify(estoque), { headers })
       .toPromise()

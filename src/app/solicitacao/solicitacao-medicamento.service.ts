@@ -9,14 +9,16 @@ import { environment } from '../../environments/environment';
 export class SolicitacaoMedicamentoService {
 
   solicitacaosUrl: string;
+  token: string;
 
   constructor(private http: Http) {
     this.solicitacaosUrl = `${environment.apiUrl}/solicitacao`;
+    this.token = localStorage.getItem('token');
   }
 
   salvar(solicitacao: Solicitacao): Promise<Solicitacao> {
     const headers = new Headers();
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Authorization', `bearer ${this.token}`);
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.solicitacaosUrl,
       JSON.stringify(solicitacao), { headers })
@@ -27,7 +29,7 @@ export class SolicitacaoMedicamentoService {
 
   confirmarSolicitacao(solicitacao, lote): Promise<Solicitacao> {
     const headers = new Headers();
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Authorization', `bearer ${this.token}`);
     headers.append('Content-Type', 'application/json');
     return this.http.put(`${this.solicitacaosUrl}/confirmar-solicitacao/${lote}`, JSON.stringify(solicitacao), { headers })
       .toPromise()
@@ -36,7 +38,7 @@ export class SolicitacaoMedicamentoService {
 
   excluirSolicitacao(solicitacao, lote): Promise<Solicitacao> {
     const headers = new Headers();
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    headers.append('Authorization', `bearer ${this.token}`);
     headers.append('Content-Type', 'application/json');
     return this.http.put(`${this.solicitacaosUrl}/excluir-solicitacao/${lote}`, JSON.stringify(solicitacao), { headers })
       .toPromise()

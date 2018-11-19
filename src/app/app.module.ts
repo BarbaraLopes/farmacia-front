@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ErrorHandlerService } from './core/error-handler.service';
 import { EstoqueService } from './estoque/estoque.service';
 import { SolicitacaoMedicamentoService } from './solicitacao/solicitacao-medicamento.service';
+import { AuthService } from './login/auth.service';
+import { SegurancaModule } from './login/seguranca.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { SolicitacaoMedicamentoService } from './solicitacao/solicitacao-medicam
 
     CoreModule,
     ToastyModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    SegurancaModule,
+
   ],
   providers: [MedicamentoService, TipoService, ErrorHandlerService, EstoqueService, SolicitacaoMedicamentoService],
   bootstrap: [AppComponent]

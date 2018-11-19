@@ -1,3 +1,5 @@
+import { AuthService } from './../../login/auth.service';
+import { AuthGuard } from './../../login/auth.guard';
 import { Status, Medicamento, Solicitacao } from '../../core/model';
 import { Component, OnInit } from '@angular/core';
 
@@ -29,7 +31,8 @@ export class SolicitacaoMedicamentoComponent implements OnInit {
     private solicitacaoMedicamentoService: SolicitacaoMedicamentoService,
     private formBuilder: FormBuilder,
     private toasty: ToastyService,
-    private errorHandler: ErrorHandlerService) { }
+    private errorHandler: ErrorHandlerService,
+    private auth: AuthService) { }
 
   ngOnInit() {
     this.formulario = this.formBuilder.group({
@@ -57,6 +60,14 @@ export class SolicitacaoMedicamentoComponent implements OnInit {
     this.display = true;
   }
 
+  preSolicitar() {
+    if (this.auth.isAccessTokenInvalido()) {
+      this.mensagem = 'Você precisa estar logado antes de continuar...';
+    } else {
+      this.solicitar();
+    }
+  }
+
   solicitar() {
     const solicitacao = new Solicitacao();
     solicitacao.medicamento = this.medicamento;
@@ -68,7 +79,9 @@ export class SolicitacaoMedicamentoComponent implements OnInit {
           + moment(solicitacaoAdicionada.dataFinal).format('DD/MM/YYYY') + '.\n Não esqueça de levar a receita.';
           this.display = false;
           this.displaySucesso = true;
-      }).catch(erro => { this.display = false; this.errorHandler.handle(erro); });
+      }).catch(erro => {
+        this.display = false;
+        this.errorHandler.handle(erro); });
   }
 
   fecharModal() {
